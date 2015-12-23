@@ -1,9 +1,15 @@
 #!/usr/bin/env node
 
+
+
+ /**
+  * Load environment vars
+  */
+require('dotenv').load();
+
 /**
  * Module dependencies.
  */
-
 var app = require('../app');
 var debug = require('debug')('SurveySays:server');
 var http = require('http');
@@ -15,6 +21,8 @@ var models = require('../models');
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+
+
 
 /**
  * Sync models with database
