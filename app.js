@@ -1,5 +1,5 @@
 var express = require('express');
-var nunjucks = require('express-nunjucks');
+var nunjucks = require('nunjucks');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -12,8 +12,11 @@ var users = require('./routes/users');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'templates'));
 app.set('view engine', 'html');
+nunjucks.configure('templates', {
+    autoescape: true,
+    express: app
+});
 
 
 // uncomment after placing your favicon in /public
@@ -57,6 +60,7 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
 
 
 module.exports = app;

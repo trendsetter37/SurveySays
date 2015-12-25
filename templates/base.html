@@ -1,9 +1,15 @@
 <!doctype html>
 <html>
 <head>
-  
+  <title>{% block title %}SurveySays{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/foundation.min.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/app.css">
 </head>
 <body>
+{% block body %}{% endblock %}
 
+<script src="javascripts/vendor/jquery.min.js"></script>
+<script src="javascripts/foundation.min.js"></script>
+<script src="javascripts/app.js"></script>
 </body>
 </html>
