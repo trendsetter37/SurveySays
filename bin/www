@@ -31,6 +31,8 @@ app.set('port', port);
  * Sync models with database
  */
 models.sequelize.sync({force: true}).then(function () {
+    /* Add initial ten questions */
+    
     server = app.listen(app.get('port'), function () {
         debug('SurveySays listening on port ' + server.address().port);
     });

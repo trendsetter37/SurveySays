@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+/* Admin page */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Random question of the day' });
+    res.render('admin', {title: 'Admin page'});
 });
 
 module.exports = router;

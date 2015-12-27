@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block scripts %}
+<script type="text/"></script>
+{% endblock %}
+{% block body %}
+  <div class="row">
+    <div class="small-8 small-centered medium-8 medium-centered columns">
+      <form>
+        <div class="row column log-in-form">
+          <h4 class="text-center">Enter a new question</h4>
+          <label>Question
+            <input type="text" placeholder="Le commandier">
+          </label>
+          <fieldset class="admin">
+            <legend>Choices</legend>
+            <i class="fa fa-plus text-left"></i>&nbsp;<p class="add">Add Choice</p>
+            <input type="text" placeholder="Choice">
+          </fieldset>
+          <p><a type="submit" class="button expanded">Enter into Database</a></p>
+
+        </div>
+      </form>
+
+
+    </div>
+  </div>
+{% endblock %}

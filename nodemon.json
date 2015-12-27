@@ -1,0 +1,9 @@
+{
+  "verbose": true,
+  "ignore": ["*.test.js", "fixtures/*"],
+  "execMap": {
+    "rb": "ruby",
+    "js": "node"
+  },
+  "ext": "js html json css"
+}
