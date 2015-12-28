@@ -7,7 +7,8 @@ $(function () {
     var prefix = '<div class="row collapse" id="wrapper">';
     var suffix = '</div>';
 
-    $('body').on('click', '#add i', function () {
+    $('body').on('click', '#add i', function (event) {
+      event.preventDefault ? event.preventDefault() : event.returnValue = false;
       var input = '<div class="small-10 columns">' +
       '<input type="text" placeholder="Choice ' + choiceCount + '">' +
       '</div>' + // Closes text input column
@@ -19,14 +20,13 @@ $(function () {
       var choiceAddition = prefix + input + suffix;
       $(choiceAddition).appendTo(fieldset);
       choiceCount++;
-      return false;
     });
 
     $('body').on('click', '#rmChoice', function () {
+        event.preventDefault ? event.preventDefault() : event.returnValue = false;
         if (choiceCount > 2) {
           $(this).parents('#wrapper').remove();
           choiceCount--;
         }
-        return false;
     });
 });
