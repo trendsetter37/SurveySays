@@ -20,12 +20,7 @@ module.exports = function (sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function (models) {
-                Answer.belongsTo(models.Question, {
-                    onDelete: "CASCADE",
-                    foreignKey: {
-                        allowNull: false
-                    }
-                });
+                Answer.belongsTo(models.Question);
             }
         }
     });

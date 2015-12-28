@@ -8,7 +8,7 @@ module.exports = function (sequelize, DataTypes) {
             autoIncrement: true,
             primaryKey: true
         },
-        question: {
+        query: {
             type: DataTypes.TEXT,
             allowNull: false
         }
