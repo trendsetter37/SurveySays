@@ -2,26 +2,26 @@
 {% block body %}
   <div class="row">
     <div class="small-8 small-centered medium-8 medium-centered columns">
+      {# ************************* FORM ****************************** #}
       <form>
-        <div class="row column log-in-form">
           <h4 class="text-center">Enter a new question</h4>
           <label>Question
-            <input type="text" placeholder="Le commandier">
+            <input type="text" placeholder="Le question">
           </label>
           <fieldset id="qChoices">
             <legend>Choices</legend>
-            <a href="#" id="add">
+            <div id="add">
               <i class="fa fa-plus"> Add Choice</i>
-            </a>
+            </div>
             <div class="row">
-              <div class="small-10 small-centered medium-10 medium-centered columns">
+              <div class="small-12 small-centered medium-12 medium-centered columns">
                 <input type="text" name="pChoice_1" placeholder="Choice 1">
               </div>
             </div>
           </fieldset>
           <p><a type="submit" class="button">Enter into Database</a></p>
-        </div>
       </form>
+      {# ************************* FORM ******************************** #}
     </div>
   </div>
 {% endblock %}
