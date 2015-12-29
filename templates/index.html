@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
+{% include "navigation.html" %}
 <div class="row">
   <div class="small-8 small-centered meduium-centered large-centered columns">
     <h1>Random Question</h1>
@@ -8,12 +9,12 @@
       <p>The Query</p>
       <fieldset>
 
-          {# This will convert into a for loop for answers #}
+          {# This will be converted into a for loop for answers #}
           <input type="radio" name="answer" value="Red" id="answerRed">
           <label for="answerRed">Red</label><br>
           <input type="radio" name="answer" value="Blue" id="answerBlue">
           <label for="answerBlue">Blue</label><br>
-        
+
       </fieldset>
       <input class="button" type="submit" id="submit-button">
     </form>

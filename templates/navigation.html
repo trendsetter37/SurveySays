@@ -1,0 +1,33 @@
+<ul class="menu simple">
+  <li><a href="/"><button class="button hollow">Home</button></a></li>
+  {% block admin %}
+  <li>
+
+      <button class="button hollow" data-toggle="admin-dropdown">Admin</button>
+
+  </li>
+
+  {% endblock %}
+  {% block Logout %}{% endblock %}
+
+</ul>
+{% block hidden %}
+<div class="dropdown-pane" id="admin-dropdown" data-dropdown data-auto-focus="true">
+  Login to Admin Section
+  <form action="/admin">
+    <div class="row">
+      <div class="medium-6 columns">
+        <label>User
+          <input type="text" placeholder="Username">
+        </label>
+      </div>
+      <div class="medium-6 columns">
+        <label>Password
+          <input type="password" placeholder="Secret">
+        </label>
+      </div>
+    </div>
+    <button class="button submit" type="submit">Login</button>
+  </form>
+</div>
+{% endblock %}

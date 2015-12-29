@@ -5,13 +5,18 @@
   <link rel="stylesheet" type="text/css" href="stylesheets/foundation.min.css">
   <link rel="stylesheet" type="text/css" href="stylesheets/app.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  {# Scripts #}
+  <script src="javascripts/vendor/modernizr.js"></script>
+  {% block head_scripts %}{% endblock %}
 </head>
 <body>
+{# navigation #}
 
 {% block body %}{% endblock %}
 
 
 <script src="javascripts/vendor/jquery.min.js"></script>
+<script src="javascripts/vendor/fastclick.js"></script>
 <script src="javascripts/foundation.min.js"></script>
 <script src="javascripts/app.js"></script>
 {# Additional scripts can be added here #}
