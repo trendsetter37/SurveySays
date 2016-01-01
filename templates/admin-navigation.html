@@ -1,16 +1,11 @@
 {% extends "navigation.html" %}
 {% block admin %}
-<li>
-  <button href="#" data-dropdown="drop1" class="button dropdown">Admin</button>
-</li>
+<li><a href="#/new-question">New Question</a></li>
+<li><a href="#/find-question">Edit Question</a></li>
+<li><a href="#/results">Show Results</a></li>
 {% endblock %}
 {% block Logout %}
 <li><a href="#"><button class="button hollow">Logout</button></a></li>
 {% endblock %}
 {% block hidden %}
-<ul id="drop1" data-dropdown-content class="f-dropdown">
-  <li><a href="#">New Question</a></li>
-  <li><a href="#">Edit Question</a></li>
-  <li><a href="#">Show Results</a></li>
-</ul>
 {% endblock %}

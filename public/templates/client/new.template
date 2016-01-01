@@ -1,0 +1,52 @@
+
+  <form class="form" action="#/new-question" method="post">
+      <h4 class="text-center">Enter a new question</h4>
+      <label>Question
+        <input type="text" id="query" name="question" placeholder="Le question">
+      </label>
+      <fieldset id="qChoices">
+        <legend>Choices</legend>
+        <div id="add">
+          <i class="fa fa-plus"> Add Choice</i>
+        </div>
+        <div class="row">
+          <div class="small-12 small-centered medium-12 medium-centered columns">
+            <input type="text" class="pChoice" name="choice_1" placeholder="Choice 1">
+          </div>
+        </div>
+      </fieldset>
+      <input id="submit" type="submit" class="button" value="Enter into Database"/>
+  </form>
+<script>
+
+$(function () {
+  var choiceCount = 2;
+  var fieldset = $('#qChoices');
+  var prefix = '<div class="row collapse" id="wrapper">';
+  var suffix = '</div>';
+
+  $('#spa').on('click', '#add i', function (event) {
+    var input = '<div class="small-10 medium-10 columns">' +
+                  '<input type="text" name="choice_' + choiceCount + '" class="pChoice" placeholder="Choice ' + choiceCount + '">' +
+                '</div>' +
+                '<div class="small-2 medium-2 large-2 columns">' +
+                  '<span class="button secondary postfix" id="rmChoice">' +
+                    '<i class="fa fa-times"></i>' +
+                  '</span>' +
+                '</div>';
+    var choiceAddition = prefix + input + suffix;
+    $(choiceAddition).appendTo(fieldset);
+    choiceCount++;
+  });
+
+  $('#spa').on('click', '#rmChoice', function () {
+      event.preventDefault ? event.preventDefault() : event.returnValue = false;
+      if (choiceCount > 2) {
+        $(this).parents('#wrapper').remove();
+        choiceCount--;
+      }
+  });
+
+});
+
+</script>
