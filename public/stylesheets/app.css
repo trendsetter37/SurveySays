@@ -2,7 +2,7 @@ a.add {
   text-decoration: none !important;
 }
 
-.button {
+.button.rounded {
   border-radius: .35rem;
 }
 
@@ -28,6 +28,19 @@ fieldset.admin {
   border-radius: 2%;
 }
 
+.rounded {
+	border: 1px solid #ccc;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-moz-box-shadow: 2px 2px 3px #666;
+	-webkit-box-shadow: 2px 2px 3px #666;
+	box-shadow: 2px 2px 3px #666;
+	font-size: 20px;
+	padding: 4px 7px;
+	outline: 0;
+	-webkit-appearance: none;
+}
 
 input.button {
   margin-top: 20px;
@@ -42,6 +55,10 @@ i, p.add {
   border: 1px solid #cacaca;
   padding: 1rem;
   border-radius: 3px;
+}
+
+.rounded {
+  border-radius: .35rem;
 }
 
 span {

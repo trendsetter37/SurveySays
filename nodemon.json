@@ -5,5 +5,5 @@
     "rb": "ruby",
     "js": "node"
   },
-  "ext": "js html json css"
+  "ext": "js html json css template"
 }

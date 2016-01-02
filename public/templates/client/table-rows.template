@@ -1,0 +1,5 @@
+<tr>
+  <td id="id"><%= id %></td>
+  <td id="query"><%= query %></td>
+  <td><button>Edit</button></td>
+</tr>

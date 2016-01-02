@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
     res.render('admin', {title: 'Admin page'});
 });
 
-router.post('/', function (req, res, next) {
+router.post('/new', function (req, res, next) {
   /* Receive a json with question data */
   /* json example:
     { question: "Some query",
@@ -15,11 +15,7 @@ router.post('/', function (req, res, next) {
   */
 
   var data = req.body; // object
-
-
   var responseObject = {};
-
-
   // Enter question info into database
 
   models.Question.create({
@@ -38,6 +34,24 @@ router.post('/', function (req, res, next) {
   });
 });
 
+router.post('/find', function (req, res, next) {
+  var data = req.body;
+
+  models.Question.findAll({
+    where: {
+      query: {
+        $like: '%' + data.query + '%'
+      }
+    },
+    include : [{model: models.Answer}]
+  }).then(function (results) {
+    if (results) {
+      res.json(results);
+    } else {
+      res.json({'status': 'error'});
+    }
+  });
+});
 
 
 var jsonify = function (result) {

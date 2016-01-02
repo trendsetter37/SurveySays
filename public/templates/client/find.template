@@ -1,1 +1,28 @@
-<h1>Admin Find</h1>
+<h4>Find/Edit a question</h4>
+<form action="#/find-question" method="post">
+  <div class="input-group rounded">
+    <input type="text" name="query" class="input-group-field" placeholder="Question">
+    <div class="input-group-button">
+      <button type="submit" class="button secondary">Search</button>
+    </div>
+  </div>
+</form>
+<section class="text-centered">
+  <div class="row">
+    <div class="small-12 small-centered medium-12 medium-centered large-12 large-centered columns">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Question</th>
+            <th>Modify</th>
+          </tr>
+        </thead>
+        <tbody id="tableData">
+          <!-- Loop through results here -->
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
