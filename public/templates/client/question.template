@@ -1,0 +1,34 @@
+<form action="#/edit-question" method="post">
+  <p>Question</p>
+  <div class="input-group">
+    <input type="hidden" name="query_id" value="<%= data[0].id %>">
+    <span class="input-group-label"><%= data[0].id %></span>
+    <input class="input-group-field" name="query" type="text"
+           value="<%= data[0].query %>">
+  </div>
+  <hr>
+  <p>Answers</p>
+
+      <!--
+          * object will have an array with key answer_id
+            - An array of answer_id that need to be updated in back-end DB
+          * The main object also conains
+            - (key, value) / (answer_id, choice_text)
+         -->
+    <% for (answer of data[0].answers) { %>
+      <div class="input-group">
+        <input class="input-group-field" name="answer_id"
+               type="hidden" value="<%= answer.id %>">
+        <span class="input-group-label"><%= answer.id %></span>
+
+        <input class="input-group-field" type="text" name="<%= answer.id %>"
+               value="<%= answer.choice %>">
+      </div>
+    <% } %>
+
+
+  <div class="button-group">
+    <a href="#/find-question"><button class="button secondary">Back</button></a>
+    <button class="button" type="submit">Save changes</button>
+  </div>
+</form>

@@ -1,5 +1,5 @@
 <tr>
-  <td id="id"><%= id %></td>
-  <td id="query"><%= query %></td>
-  <td><button>Edit</button></td>
+  <td><%= id %></td>
+  <td><%= query %></td>
+  <td><button><a href="#/edit-question/<%= id %>">Edit</a></button></td>
 </tr>
