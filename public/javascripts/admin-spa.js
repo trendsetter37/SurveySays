@@ -122,8 +122,27 @@
     this.notFound = function () {
       // Sammy Quirk
     }
-    /************************ End Routes ***********************************/
   });
+
+  /**************************    DRY     ***********************************/
+  function postHelper(context, data, url, verb, template) {
+    // Check optional template variable
+    var template = (typeof template === 'undefined')? '' : template;
+    $.ajax({
+      url: url,
+      type: verb,
+      dataType: 'json',
+      contentType: 'application/json',
+      data: data,
+      success: function (returnData) {
+        context.partial(template, returnData);
+      },
+      error: function (error) {
+        context.partial('templates/client/error.template', error);
+      }
+    });
+  }
+
   // DOM Ready
   $(function() {
     app.run();
