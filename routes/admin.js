@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
+var Promise = require('bluebird');
+
 
 /* Admin page */
 
@@ -46,7 +48,7 @@ router.post('/new', function (req, res, next) {
           responseObject['answers'].push(data[key]);
         }
     }
-    res.json(jsonify(responseObject));
+    res.json(responseObject);
   });
 });
 
@@ -95,11 +97,43 @@ router.post('/edit', function (req, res, next) {
 });
 
 router.post('/delete', function (req, res, next) {
-  
-})
+  // Delete the question
+  var data = req.body;
+  var returnData = {};
 
+  models.Question.findOne({
+    where: {
+      id: data.id
+    },
+    include: [{model: models.Answer}]
+  }).then(function (result) {
+    result.destroy().then(function (confirmation) {
+      returnData['query_id'] = confirmation.id
+      returnData['answer_ids'] = [];
+
+      Promise.each(confirmation.answers, function (answer) {
+        return answer.destroy()
+          .then(function (answerConfirmation) {
+            returnData['answer_ids'].push(answerConfirmation.id);
+          });
+      }).then(function () {
+        returnData['status'] = 'done';
+        res.json(returnData);
+      });
+    });
+  }).catch(function (e) {
+    // Something went wrong
+    responseData['error'] = e;
+    responseData['status'] = 'Error';
+    res.json(responseData);
+  });
+
+}); // close delete post route
+
+/* Deprecated -- redundant
 var jsonify = function (result) {
   return JSON.stringify(result);
 }
+*/
 
 module.exports = router;

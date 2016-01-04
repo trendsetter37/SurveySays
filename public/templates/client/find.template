@@ -16,20 +16,22 @@
             <th>ID</th>
             <th>Question</th>
             <th>Modify</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody id="tableData">
           <!-- Loop through results here -->
-          <% if (data) { %>
-            <% for (question of data) { %>
-                  <tr>
-                    <td><%= question.id %></td>
-                    <td><%= question.query %></td>
-                    <td><button><a href="#/edit-question/<%= question.id %>">Edit
-                    </a></button></td>
-                  </tr>
-            <% } %>
-          <% } %>
+          <% if (data !== 'empty') {
+               for (question of data) { %>
+                 <tr>
+                   <td><%= question.id %></td>
+                   <td><%= question.query %></td>
+                   <td><button><a href="#/edit-question/<%= question.id %>">Edit</a></button></td>
+                   <td><button><a href="#/delete-question/<%= question.id %>">Delete</a></button></td>
+                 </tr>
+            <% }
+          } %>
+
 
         </tbody>
       </table>

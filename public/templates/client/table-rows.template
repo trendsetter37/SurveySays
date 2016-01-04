@@ -2,4 +2,5 @@
   <td><%= id %></td>
   <td><%= query %></td>
   <td><button><a href="#/edit-question/<%= id %>">Edit</a></button></td>
+  <td><button><a href="#/delete-question/<%= id %>">Delete</a></button></td>
 </tr>

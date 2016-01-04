@@ -26,6 +26,10 @@
       }
     });
 
+    this.bind('deletion-update', function () {
+      app.log('Entered deletion update binding');
+    });
+
     this.bind('back-to-find', function (context) {
       app.log('This is where you go back');
       context.partial('templates/client/find.template');
@@ -41,11 +45,9 @@
       });
 
       if (tableResults.length > 0) {
-        context.app.swap('');
-        context.render('templates/client/find.template', {data: tableResults})
-          .appendTo(context.$element());
+        context.partial('templates/client/find.template', {data: tableResults});
       } else {
-        context.partial('templates/client/find.template');
+        context.partial('templates/client/find.template', {data: 'empty'});
       }
     });
 
@@ -71,24 +73,26 @@
       });
     });
 
-    this.get('#/delete-question', function (context) {
+    this.get('#/delete-question/:id', function (context) {
       // Delete question
-      context.log('Delete question route');
-      // get ids
-      var query_id = context.$element('.input-group-label').val();
-      context.log('The query_id is: ');
-      context.log(query_id);
-      context.log(this.params);
+
+      //context.log(this.params);
       //context.trigger('back-to-find');
-      /*
+
       $.ajax({
         url: 'admin/delete',
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json',
-        data:
-        success: function
-      }) */
+        data: this.json(this.params),
+        success: function (returnData) {
+          context.log(returnData);
+          context.trigger('deletion-update');
+        },
+        error: function (error) {
+          context.log(error);
+        }
+      });
     });
     /************************ POST Routes ***********************************/
     this.post('#/edit-question', function (context) {
