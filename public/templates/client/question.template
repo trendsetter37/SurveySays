@@ -1,4 +1,4 @@
-<form action="#/edit-question" method="post">
+<form id="questionForm" action="#/edit-question" method="post">
   <p>Question</p>
   <div class="input-group">
     <input type="hidden" name="query_id" value="<%= data[0].id %>">
@@ -27,8 +27,11 @@
     <% } %>
 
 
-  <div class="button-group">
-    <a href="#/find-question"><button class="button secondary">Back</button></a>
+  <div class="button-group round">
+    <a href="#/find-question"><button name="action" value="back"
+      class="button secondary">Back</button></a>
+    <a href="#/delete-question"><button name="action" value="delete"
+       class="button alert">Delete</button></a>
     <button class="button" type="submit">Save changes</button>
   </div>
 </form>

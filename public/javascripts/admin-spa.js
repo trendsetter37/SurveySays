@@ -13,30 +13,44 @@
       var tableResults = app.session('search-results', function () {
         return {};
       });
+
       var table = app.$element('#tableData');
       // Load data into tableData
       if (tableResults.length !== 0) {
         table.html('');
         this.renderEach('templates/client/table-rows.template', tableResults)
           .appendTo(table);
+        // store table html for back button
       } else {
         table.html('<tr><td colspan="4">No Results</td></tr>');
       }
     });
 
+    this.bind('back-to-find', function (context) {
+      app.log('This is where you go back');
+      context.partial('templates/client/find.template');
+    });
     /*********************** Routes *****************************************/
     this.get('#/new-question', function (context) {
       context.partial('templates/client/new.template');
     });
+
     this.get('#/find-question', function (context) {
       var tableResults = context.session('search-results', function () {
         return {};
       });
-      context.partial('templates/client/find.template');
+
+      if (tableResults.length > 0) {
+        context.app.swap('');
+        context.render('templates/client/find.template', {data: tableResults})
+          .appendTo(context.$element());
+      } else {
+        context.partial('templates/client/find.template');
+      }
     });
 
     this.get('#/results', function (context) {
-
+      // Place holder for results page route
     });
 
     this.get('#/edit-question/:id', function (context) {
@@ -56,10 +70,30 @@
         }
       });
     });
+
+    this.get('#/delete-question', function (context) {
+      // Delete question
+      context.log('Delete question route');
+      // get ids
+      var query_id = context.$element('.input-group-label').val();
+      context.log('The query_id is: ');
+      context.log(query_id);
+      context.log(this.params);
+      //context.trigger('back-to-find');
+      /*
+      $.ajax({
+        url: 'admin/delete',
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data:
+        success: function
+      }) */
+    });
     /************************ POST Routes ***********************************/
     this.post('#/edit-question', function (context) {
       // Check the datas
-      context.log(this.params);
+      //context.log(this.params);
 
       // Send to backend
       $.ajax({
@@ -69,8 +103,8 @@
         contentType: 'application/json',
         data: this.json(this.params),
         success: function (data) {
-          context.log('new question');
-          context.log(data);
+          //context.log('new question');
+          //context.log(data);
         },
         error: function (e) {
           context.log(e);
@@ -79,8 +113,8 @@
     });
 
     this.post('#/find-question', function (context) {
-
       // go get the data from db
+
       $.ajax({
         url: '/admin/find',
         type: 'POST',
@@ -91,14 +125,13 @@
           // Persist Results
           context.session('search-results', data);
           // trigger dom update!
-          context.trigger('update-table');
-
+          context.trigger('update-table', context);
         },
         error: function (e) {
           context.log(e);
         }
-
       });
+
     });
 
     this.post('#/new-question', function (context) {
@@ -110,7 +143,7 @@
         contentType: 'application/json',
         data: this.json(this.params),
         success: function (data) {
-          context.log('Return data ', data);
+          //context.log('Return data ', data);
         },
         error: function (e) {
           context.log(e);
@@ -118,6 +151,7 @@
       });
       context.log('done');
     });
+
 
     this.notFound = function () {
       // Sammy Quirk

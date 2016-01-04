@@ -94,6 +94,9 @@ router.post('/edit', function (req, res, next) {
   res.json({'status': 'done'});
 });
 
+router.post('/delete', function (req, res, next) {
+  
+})
 
 var jsonify = function (result) {
   return JSON.stringify(result);
