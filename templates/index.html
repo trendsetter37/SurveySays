@@ -18,3 +18,14 @@
   </div>
 </div>
 {% endblock %}
+{% block scripts %}
+<script src="javascripts/vendor/fingerprint2.min.js"></script>
+<script>
+// Will use this to identify users
+new Fingerprint2().get(function (result, components) {
+
+  console.log(result);
+
+})
+</script>
+{% endblock %}
