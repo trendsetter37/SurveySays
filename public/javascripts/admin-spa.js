@@ -1,4 +1,26 @@
 (function ($) {
+    var SearchPlugin = function (app) {
+
+      this.helpers({
+        updateSearchResults: function (data, action) {
+          // Action will determine what to do with datas
+          // action = 'delete', 'etc.'
+          if ('delete' === action) {
+            // query_id should be contained within data as a key
+            var tableResults = app.session('search-results', function () {
+              return {};
+            });
+            if (tableResults.length !== 0) {
+              tableResults = tableResults.filter(function (result) {
+                return data.query_id !== result.id;
+              });
+            }
+            app.session('search-results', tableResults);
+          }
+        } // close updateSearchResults
+
+      });
+    };
 
     var app = $.sammy('#spa', function () {
     // plugins
@@ -6,6 +28,8 @@
     this.use(Sammy.JSON);
     this.use('Storage');
     this.use('Session');
+    this.use(SearchPlugin);
+
 
     // Events: Implent bindings and triggers to update templates
     /*********************** Events *****************************************/
@@ -75,10 +99,7 @@
 
     this.get('#/delete-question/:id', function (context) {
       // Delete question
-
-      //context.log(this.params);
-      //context.trigger('back-to-find');
-
+      
       $.ajax({
         url: 'admin/delete',
         type: 'POST',
@@ -86,8 +107,9 @@
         contentType: 'application/json',
         data: this.json(this.params),
         success: function (returnData) {
-          context.log(returnData);
-          context.trigger('deletion-update');
+          context.updateSearchResults(returnData, 'delete');
+          context.trigger('update-table');
+          context.redirect('#/find-question');
         },
         error: function (error) {
           context.log(error);
@@ -107,8 +129,7 @@
         contentType: 'application/json',
         data: this.json(this.params),
         success: function (data) {
-          //context.log('new question');
-          //context.log(data);
+          context.partial('templates/client/find.template');
         },
         error: function (e) {
           context.log(e);
@@ -147,13 +168,13 @@
         contentType: 'application/json',
         data: this.json(this.params),
         success: function (data) {
-          //context.log('Return data ', data);
+          context.partial('templates/client/new.template');
         },
         error: function (e) {
           context.log(e);
         }
       });
-      context.log('done');
+
     });
 
 
@@ -163,6 +184,8 @@
   });
 
   /**************************    DRY     ***********************************/
+
+/*
   function postHelper(context, data, url, verb, template) {
     // Check optional template variable
     var template = (typeof template === 'undefined')? '' : template;
@@ -180,6 +203,24 @@
       }
     });
   }
+
+  var updateSearchResults = function (context, data, action) {
+    // action will delete or something else
+    // determines what to do with the data
+    context.log('Entered into update search function');
+    if ('delete' === data) {
+      // deletion data
+      var searchResults = context.session('search-results');
+      context.log(searchResults);
+      for (result in searchResults) {
+        context.log(result);
+      }
+    }
+  }
+  */
+
+  /******************************* Plugins *****************************/
+
 
   // DOM Ready
   $(function() {

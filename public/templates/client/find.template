@@ -21,7 +21,7 @@
         </thead>
         <tbody id="tableData">
           <!-- Loop through results here -->
-          <% if (data !== 'empty') {
+          <% if (data !== 'empty' || data !== 'undefined') {
                for (question of data) { %>
                  <tr>
                    <td><%= question.id %></td>

@@ -7,7 +7,8 @@
            value="<%= data[0].query %>">
   </div>
   <hr>
-  <p>Answers</p>
+  <fieldset id="qChoices">
+    <legend>Answers</legend>
 
       <!--
           * object will have an array with key answer_id
@@ -25,12 +26,12 @@
                value="<%= answer.choice %>">
       </div>
     <% } %>
+  </fieldset>
 
-
-  <div class="button-group round">
+  <div class="button-group">
     <a href="#/find-question"><button name="action" value="back"
       class="button secondary">Back</button></a>
-    <a href="#/delete-question"><button name="action" value="delete"
+    <a href="#/delete-question/<%= data[0].id %>"><button name="action" value="delete"
        class="button alert">Delete</button></a>
     <button class="button" type="submit">Save changes</button>
   </div>
