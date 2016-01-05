@@ -2,6 +2,10 @@ a.add {
   text-decoration: none !important;
 }
 
+.align-middle {
+  height: 50vh;
+}
+
 .button.rounded {
   border-radius: .35rem;
 }
@@ -40,6 +44,10 @@ fieldset.admin {
 	padding: 4px 7px;
 	outline: 0;
 	-webkit-appearance: none;
+}
+
+#index-container {
+  height: 100vh;
 }
 
 input.button {

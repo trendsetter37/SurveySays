@@ -1,0 +1,6 @@
+<h1>Survey Question</h1>
+<% if (fingerprint !== 'none') {
+  %><p>Your fingerprint is: <%= fingerprint %></p><%
+} else {
+  %><p>You have no fingerprint</p><%
+} %>

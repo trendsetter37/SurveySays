@@ -1,35 +1,41 @@
 
-  <form class="form" action="#/new-question" method="post">
-      <h4 class="text-center">Enter a new question</h4>
-      <label>Question
-        <input type="text" class="rounded" id="query" name="question" placeholder="Le question">
-      </label>
-      <fieldset id="qChoices">
-        <legend>Choices</legend>
-        <div id="add">
-          <i class="fa fa-plus"> Add Choice</i>
-        </div>
-        <div class="row">
-          <div class="small-12 small-centered medium-12 medium-centered columns">
-            <input class="rounded" type="text" class="pChoice" name="choice_1" placeholder="Choice 1">
-          </div>
-        </div>
-      </fieldset>
-      <input id="submit" type="submit" class="button" value="Enter into Database"/>
-  </form>
+<div class="row align-middle align-center">
+  <div class="columns">
+    <div class="row align-center">
+      <form class="form" action="#/new-question" method="post">
+          <h4 class="text-center">Enter a new question</h4>
+          <label>Question
+            <input type="text" class="rounded" id="query" name="question" placeholder="Le question">
+          </label>
+          <fieldset id="qChoices">
+            <legend>Choices</legend>
+            <div id="add">
+              <i class="fa fa-plus"> Add Choice</i>
+            </div>
+            <div class="row align-center">
+              <div class="small-8 columns">
+                <input class="rounded" type="text" class="pChoice" name="choice_1" placeholder="Choice 1">
+              </div>
+            </div>
+          </fieldset>
+          <input id="submit" type="submit" class="button" value="Enter into Database"/>
+      </form>
+    </div>
+  </div>
+</div>
 <script>
 
 $(function () {
   var choiceCount = 2;
   var fieldset = $('#qChoices');
-  var prefix = '<div class="row collapse" id="wrapper">';
+  var prefix = '<div class="row align-center" id="wrapper">';
   var suffix = '</div>';
 
   $('#spa').on('click', '#add i', function (event) {
-    var input = '<div class="small-10 medium-10 columns">' +
+    var input = '<div class="small-10 columns">' +
                   '<input class="rounded" type="text" name="choice_' + choiceCount + '" class="pChoice" placeholder="Choice ' + choiceCount + '">' +
                 '</div>' +
-                '<div class="small-2 medium-2 large-2 columns">' +
+                '<div class="small-2 columns">' +
                   '<span class="button secondary postfix" id="rmChoice">' +
                     '<i class="fa fa-times"></i>' +
                   '</span>' +

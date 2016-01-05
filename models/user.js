@@ -9,13 +9,16 @@ module.exports = function (sequelize, DataTypes) {
             primaryKey: true
         },
         ident: {
-            type: DataTypes.STRING,  // Hash from fingerprint2
-            allowNull: false
+          type: DataTypes.STRING, // Hash from fingerprint2js
+          allowNull: false
         }
     }, {
         classMethods: {
             associate: function (models) {
-                User.hasMany(models.Question);
+                User.belongsToMany(models.Question, {
+                  through: 'UserQuestion',
+                  foreignKey: 'ident'
+                });
             }
         }
     });

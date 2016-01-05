@@ -25,4 +25,5 @@ db.Sequelize = Sequelize;
 console.log('Associations');
 console.log(db.Question.associations.answers.accessors);
 console.log(db.Answer.associations.question.accessors);
+
 module.exports = db;

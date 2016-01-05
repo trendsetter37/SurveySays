@@ -99,7 +99,7 @@
 
     this.get('#/delete-question/:id', function (context) {
       // Delete question
-      
+
       $.ajax({
         url: 'admin/delete',
         type: 'POST',
@@ -177,50 +177,10 @@
 
     });
 
-
     this.notFound = function () {
       // Sammy Quirk
     }
   });
-
-  /**************************    DRY     ***********************************/
-
-/*
-  function postHelper(context, data, url, verb, template) {
-    // Check optional template variable
-    var template = (typeof template === 'undefined')? '' : template;
-    $.ajax({
-      url: url,
-      type: verb,
-      dataType: 'json',
-      contentType: 'application/json',
-      data: data,
-      success: function (returnData) {
-        context.partial(template, returnData);
-      },
-      error: function (error) {
-        context.partial('templates/client/error.template', error);
-      }
-    });
-  }
-
-  var updateSearchResults = function (context, data, action) {
-    // action will delete or something else
-    // determines what to do with the data
-    context.log('Entered into update search function');
-    if ('delete' === data) {
-      // deletion data
-      var searchResults = context.session('search-results');
-      context.log(searchResults);
-      for (result in searchResults) {
-        context.log(result);
-      }
-    }
-  }
-  */
-
-  /******************************* Plugins *****************************/
-
 
   // DOM Ready
   $(function() {

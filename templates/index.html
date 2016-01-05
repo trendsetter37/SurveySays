@@ -1,31 +1,26 @@
 {% extends "base.html" %}
 {% block body %}
-<div class="row">
-  <div class="small-8 small-centered meduium-centered large-centered columns">
-    <h1>Random Question</h1>
-    <p>{{ title }}</p>
-    <form action="#">
-      <p>The Query</p>
-      <fieldset>
-          {# This will be converted into a for loop for answers #}
-          <input type="radio" name="answer" value="Red" id="answerRed">
-          <label for="answerRed">Red</label><br>
-          <input type="radio" name="answer" value="Blue" id="answerBlue">
-          <label for="answerBlue">Blue</label><br>
-      </fieldset>
-      <input class="button" type="submit" id="submit-button">
-    </form>
+<div class="row align-middle" id="index-container">
+  <div class="columns">
+    <div id="main-spa">
+      <form action="#/survey" method="post">
+        <input id="fingerprint" type="hidden" name="fingerprint">
+        <input type="submit" value="Survey" class="button large secondary" id="enterSurvey">
+      </form>
+    </div>
   </div>
 </div>
 {% endblock %}
 {% block scripts %}
+<script src="javascripts/user-spa.js"></script>
 <script src="javascripts/vendor/fingerprint2.min.js"></script>
 <script>
 // Will use this to identify users
-new Fingerprint2().get(function (result, components) {
-
-  console.log(result);
-
-})
+$(function () {
+  new Fingerprint2().get(function (result, components) {
+    // Load fingerprint into hidden input
+    $('#fingerprint').val(result);
+  });
+});
 </script>
 {% endblock %}
