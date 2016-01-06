@@ -22,8 +22,8 @@ db.User.associate(db);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-console.log('Associations');
-console.log(db.Question.associations.answers.accessors);
-console.log(db.Answer.associations.question.accessors);
+
+console.log(Object.keys(db.Question.Instance.prototype));
+console.log(Object.keys(db.User.Instance.prototype));
 
 module.exports = db;

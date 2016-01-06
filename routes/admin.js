@@ -130,10 +130,5 @@ router.post('/delete', function (req, res, next) {
 
 }); // close delete post route
 
-/* Deprecated -- redundant
-var jsonify = function (result) {
-  return JSON.stringify(result);
-}
-*/
 
 module.exports = router;
