@@ -4,3 +4,13 @@
 } else {
   %><p>You have no fingerprint</p><%
 } %>
+<div class="row align-center">
+  <div class="small-8  columns">
+    <form id="question-form" action="#/submit-answer" method="post">
+      <legend class="float-center">Question</legend>
+      <hr>
+      <p>Choices will render here</p>
+      <button type="submit" class="button">Submit</button>
+    </form>
+  </div>
+</div>

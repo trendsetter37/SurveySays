@@ -19,29 +19,65 @@ router.post('/random-question', function (req, res, next) {
     },
     include: [{model: models.Question}]
   }).spread(function (userInstance, created) {
-    console.log('User: ');
-    console.log(userInstance);
-    console.log('Created: ');
-    console.log(created);
-    models.Question.findOne({
-      order: [
-        Sequelize.fn('RAND'),
-      ]
-    }).then(function (question) {
+    // created is a boolean. Was this instance just created?
 
+    userInstance.getQuestions()
+      .then(function (questions) {
 
-      returnData['question'] = question;
-      userInstance.addQuestion(question)
-        .then(function () {
-          console.log('done');
-          returnData['status'] = 'done';
-          res.json(returnData);
+        var questionIDs = questions.map(function (question) {
+          return question.id;
         });
 
-    });
+        return models.Question.findOne({
+          where: {
+            id: {
+              not: questionIDs
+            }
+          },
+          order: [ Sequelize.fn('RAND'), ]
+        });
+      })
+      .then(function (rQuestion) {
+        if (rQuestion !== null) {
+          returnData['question'] = rQuestion;
+          returnData['status'] = 'question loaded';
+
+          userInstance.addQuestion(rQuestion)
+            .then(function () {
+              res.json(returnData);
+            });
+        } else {
+          returnData['status'] = 'empty';
+          res.json(returnData);
+        }
+
+
+      });
+
 
   });
   //res.json({status: 'skipped'});
+});
+
+router.post('/reset', function (req, res, next) {
+  // TODO Acutally conduct the reset when answer question
+  // are taking data
+
+  var data = req.body;
+  console.log('User to reset: ');
+  console.log(data.fingerprint);
+  User.find({
+    where: {
+      id: data.fingerprint
+    }
+  }).then(function (user) {
+    // Remove results from all affected answers
+    return models.User.getQuestions();
+  }).then(function (questions) {
+    // TODO
+  });
+  res.json({'status': 'done'});
+
 });
 
 module.exports = router;

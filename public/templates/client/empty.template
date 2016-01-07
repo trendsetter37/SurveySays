@@ -1,0 +1,8 @@
+<h4>You've seen all of the questions!</h4>
+<div class="row">
+  <div class="columns">
+    <form action="#/reset-survey" method="post">
+      <button class="button secondary" type="submit">Reset</button>
+    </form>
+  </div>
+</div>
