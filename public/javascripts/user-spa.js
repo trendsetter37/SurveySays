@@ -18,11 +18,17 @@
         return 'none';
       });
       var questionData = context.session('random-question');
+      context.log('Question Data: ');
+      context.log(questionData);
+      if (questionData !== null) {
+        context.partial('templates/client/survey.template', {
+          fingerprint: fingerprint,
+          data: questionData
+        });
+      } else {
+        context.partial('template/client/empty.template');
+      }
 
-      context.partial('templates/client/survey.template', {
-        fingerprint: fingerprint,
-        data: questionData
-      });
     });
 
     /***************************** Post Routes *******************************/
@@ -44,6 +50,8 @@
                answers: ['answer1', 'answer2', 'answer3']
              }
            */
+           context.log('return data from ajax: ');
+           context.log(returnData);
           if (returnData.status === 'question loaded') {
             context.session('random-question', returnData);
             // TODO Trigger screen update with question
@@ -74,6 +82,7 @@
         contentType: 'application/json',
         data: this.json({fingerprint: context.session('fingerprint')}),
         success: function (returnData) {
+          context.clearSession();
           context.log('Successful reset!');
         },
         error: function (error) {
@@ -85,6 +94,24 @@
 
     this.post('#/submit-answer', function (context) {
       // Send Results to server then redirect to done screen
+      var chosenAnswerID = this.params['choice'];
+
+      $.ajax({
+        url: '/survey/submit',
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: this.json({data: chosenAnswerID}),
+        success: function (returnData) {
+          context.log('Answer submitted!');
+          context.log(returnData);
+          context.partial('templates/client/done.template');
+        },
+        error: function (error) {
+          context.log(error);
+          context.partial('templates/client/error.template', {error: error});
+        }
+      });
 
     });
 

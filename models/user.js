@@ -19,6 +19,8 @@ module.exports = function (sequelize, DataTypes) {
                   foreignKey: 'ident',
                   through: 'UserQuestion'
                 });
+
+                User.belongsToMany(models.Answer, {through: 'UserAnswer'});
             }
         }
     });

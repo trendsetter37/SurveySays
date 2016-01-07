@@ -8,8 +8,17 @@
   <div class="small-8  columns">
     <form id="question-form" action="#/submit-answer" method="post">
       <legend class="float-center">Question</legend>
+      <p><%= data.question %></p>
       <hr>
       <p>Choices will render here</p>
+      <fieldset class="fieldset">
+        <% for answer in data.answers { %>
+          <label for="<%= answer.id %>"><%= answer.choice %></label>
+          <input type="radio" name="choice" value="<%= answer.id %>"
+          id="<%= answer.id %>">
+        <% } %>
+      </fieldset>
+
       <button type="submit" class="button">Submit</button>
     </form>
   </div>
