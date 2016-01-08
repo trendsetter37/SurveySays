@@ -28,17 +28,15 @@
       } else {
         context.partial('template/client/empty.template');
       }
-
     });
 
     /***************************** Post Routes *******************************/
 
-
     this.post('#/random-question', function (context) {
       var fingerprint = this.params['fingerprint'];
       context.session('fingerprint', fingerprint);
-      // Send to DB for identification
-      // TODO
+      context.log('Sending: ');
+      context.log(fingerprint);
       $.ajax({
         url: '/survey/random-question',
         type: 'POST',
@@ -84,12 +82,14 @@
         success: function (returnData) {
           context.clearSession();
           context.log('Successful reset!');
+          context.partial('templates/client/done.template');
+
         },
         error: function (error) {
           context.log(error);
         }
       });
-      context.redirect('/');
+
     });
 
     this.post('#/submit-answer', function (context) {
@@ -101,7 +101,10 @@
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json',
-        data: this.json({data: chosenAnswerID}),
+        data: this.json({
+          answerID: chosenAnswerID,
+          user: context.session('fingerprint')
+        }),
         success: function (returnData) {
           context.log('Answer submitted!');
           context.log(returnData);

@@ -23,7 +23,4 @@ db.User.associate(db);
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-console.log(Object.keys(db.Question.Instance.prototype));
-console.log(Object.keys(db.User.Instance.prototype));
-
 module.exports = db;

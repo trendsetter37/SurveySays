@@ -9,9 +9,8 @@ var Promise = require('bluebird');
 router.post('/random-question', function (req, res, next) {
   var data = req.body;
   var returnData = {};
-  console.log('The input data is: ', data.fingerprint);
-
-  // findorcreate fingerprint in database
+  var gUser;
+  var randomQ;
 
   models.User.findOrCreate({
     where: {
@@ -22,15 +21,13 @@ router.post('/random-question', function (req, res, next) {
   .spread(function (userInstance, created) {
     // created is a boolean. Was this instance just created?
     if (!created) {
-      console.log('entered into not created clause');
+      gUser = userInstance;
       userInstance.getQuestions()
         .then(function (questions) {
-          console.log('Questions answered by user');
-          console.log(questions);
+
           var questionIDs = questions.map(function (question) {
             return question.id;
           });
-
           // return random question
           models.Question.findOne({
             where: {
@@ -43,15 +40,22 @@ router.post('/random-question', function (req, res, next) {
             },
             order: [ Sequelize.fn('RAND'), ]
           }).then(function (rQuestion) {
-            console.log('Random Question: ');
-            console.log(rQuestion);
+            returnData['question'] = rQuestion;
+            randomQ = rQuestion;
             if (rQuestion !== null) {
-              returnData['question'] = rQuestion;
-              returnData['status'] = 'question loaded';
+              rQuestion.getAnswers()
+                .then(function (answers) {
+                  returnData['answers'] = [];
+                  return Promise.each(answers, function (answer) {
+                    returnData['answers'].push({id: answer.id, choice: answer.choice});
+                  });
 
-              userInstance.addQuestion(rQuestion)
-                .then(function () {
-                  res.json(returnData);
+                }).then(function () {
+                  returnData['status'] = 'question loaded';
+                  gUser.addQuestion(randomQ)
+                    .then(function () {
+                      res.json(returnData);
+                    });
                 });
             } else {
               returnData['status'] = 'empty';
@@ -76,44 +80,54 @@ router.post('/random-question', function (req, res, next) {
 }); // close post route
 
 router.post('/reset', function (req, res, next) {
-  // TODO Fix this endpoint!
-  // are taking data
 
   var data = req.body;
   var affectedAnswers = [];
   var gUser;
-  console.log('User to reset: ');
-  console.log(data.fingerprint);
-  User.findOne({
+
+  models.User.findOne({
     where: {
       ident: data.fingerprint
     }
   }).then(function (user) {
     gUser = user;
-    user.setQuestions([]); // clear all associated questions
-    // Remove results from all affected answers
-    return user.getAnswers()
-      .then(function (answers) {
-        console.log('The answers affected: ');
-        console.log(answers);
-        Promise.each(answers, function (answer) {
-          // load answer instances into global
-          affectedAnswers.push(answer);
-          return answer.remove(gUser);
-        });
-        gUser.setAnswers([]);
+    user.setQuestions([])
+      .then(function () {
+        user.getAnswers()
+          .then(function (answers) {
+            return Promise.each(answers, function (answer) {
+              // load answer instances into global
+              affectedAnswers.push(answer);
+              return answer.removeUser(gUser);
+            });
+          }).then(function () {
+            gUser.setAnswers([])
+              .then(function () {
+                res.json({'status': 'done'});
+              });
+          });
       });
-  }).then(function () {
-    // fire response
-    res.json({'status': 'done'});
-
   });
-
 });
 
 router.post('/submit', function (req, res, next) {
   var data = req.body;
-  console.log(data);
-  res.json({status: 'done'});
+  models.User.findOne({
+    where: {
+      ident: data.user
+    }
+  }).then(function (user) {
+    models.Answer.findById(data.answerID)
+      .then(function (answer) {
+        answer.increment('picked')
+          .then(function (answer) {
+            return user.addAnswer(answer);
+          }).then(function () {
+            res.json({'status': 'done'});
+          });
+      });
+  });
+
 });
+
 module.exports = router;

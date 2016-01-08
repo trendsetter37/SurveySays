@@ -1,0 +1,7 @@
+<fieldset class="fieldset">
+  <% for answer in data.answers { %>
+    <label for="<%= answer.id %>"><%= answer.choice %></label>
+    <input type="radio" name="choice" value="<%= answer.id %>"
+    id="<%= answer.id %>">
+  <% } %>
+</fieldset>

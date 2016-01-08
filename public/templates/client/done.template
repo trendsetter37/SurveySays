@@ -1,4 +1,3 @@
 <div class="done">
-  <p>Done</P>
-    <button>Go Back</button
+  <a href="/" class="button">Go Home</a>
 </div>
