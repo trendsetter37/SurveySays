@@ -32,6 +32,19 @@ router.post('/new', function (req, res, next) {
       answers: ["First answer", "second", "third"]}
   */
 
+  /** Output into the below form
+   * (compatible with this.bind('update-table') function)
+   * location: public/javascripts/admin-spa.js 42:5
+   *
+   * {
+   *   answers: [ "Some answer", "Another" ]
+   *   createdAt: "2016-01-08T20:27:22.000Z",
+   *   id: 3,
+   *   query: "A third question",
+   *   updatedAt: "2016-01-08T20:27:22.000Z",
+   * }
+   */
+
   var data = req.body; // object
   var responseObject = {};
   // Enter question info into database
@@ -39,7 +52,8 @@ router.post('/new', function (req, res, next) {
   models.Question.create({
       query: data.question
   }).then(function (newQuestion) {
-    responseObject['question'] = newQuestion;
+    responseObject['id'] = newQuestion.id;
+    responseObject['query'] = newQuestion.query;
     responseObject['answers'] = [];
 
     for (var key in data) {
@@ -73,7 +87,8 @@ router.post('/find', function (req, res, next) {
 
 router.post('/edit', function (req, res, next) {
   var data = req.body;
-
+  console.log('Edit data:');
+  console.log(data)
   // Find question to edit
   models.Question.update({
     query: data.query
@@ -96,6 +111,7 @@ router.post('/edit', function (req, res, next) {
   res.json({'status': 'done'});
 });
 
+
 router.post('/delete', function (req, res, next) {
   // Delete the question
   var data = req.body;
@@ -108,8 +124,8 @@ router.post('/delete', function (req, res, next) {
     include: [{model: models.Answer}]
   }).then(function (result) {
     result.destroy().then(function (confirmation) {
-      returnData['query_id'] = confirmation.id
-      returnData['answer_ids'] = [];
+      returnData['id'] = confirmation.id
+      returnData['answer_ids'] = []; // may need this later?
 
       Promise.each(confirmation.answers, function (answer) {
         return answer.destroy()

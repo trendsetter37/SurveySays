@@ -4,18 +4,26 @@
       this.helpers({
         updateSearchResults: function (data, action) {
           // Action will determine what to do with datas
-          // action = 'delete', 'etc.'
+          // action = 'delete', 'add', 'etc.'
+
+          var tableResults = app.session('search-results', function () {
+            return {};
+          });
+
           if ('delete' === action) {
             // query_id should be contained within data as a key
-            var tableResults = app.session('search-results', function () {
-              return {};
-            });
+
             if (tableResults.length !== 0) {
               tableResults = tableResults.filter(function (result) {
-                return data.query_id !== result.id;
+                return data.id !== result.id;
               });
             }
             app.session('search-results', tableResults);
+
+          } else if ('add' === action) {
+              app.log('Add was the action');
+              tableResults.push(data);
+              app.session('search-results', tableResults);
           }
         } // close updateSearchResults
 
@@ -33,7 +41,16 @@
 
     // Events: Implent bindings and triggers to update templates
     /*********************** Events *****************************************/
-    this.bind('update-table', function () {
+    this.bind('update-table', function (context) {
+      /** Structure of tableResults
+       * {
+       *   answers: [ "Some answer", "Another" ]
+       *   createdAt: "2016-01-08T20:27:22.000Z",
+       *   id: 3,
+       *   query: "A third question",
+       *   updatedAt: "2016-01-08T20:27:22.000Z",
+       * }
+      */
       var tableResults = app.session('search-results', function () {
         return {};
       });
@@ -119,7 +136,7 @@
     /************************ POST Routes ***********************************/
     this.post('#/edit-question', function (context) {
       // Check the datas
-      //context.log(this.params);
+      context.log(this.params);
 
       // Send to backend
       $.ajax({
@@ -128,11 +145,11 @@
         dataType: 'json',
         contentType: 'application/json',
         data: this.json(this.params),
-        success: function (data) {
-          context.partial('templates/client/find.template');
+        success: function (returnData) {
+          context.redirect('#/find-question');
         },
-        error: function (e) {
-          context.log(e);
+        error: function (error) {
+          context.log(error);
         }
       });
     });
@@ -146,9 +163,9 @@
         data: this.json(this.params),
         dataType: 'json',
         contentType: 'application/json',
-        success: function (data) {
+        success: function (returnData) {
           // Persist Results
-          context.session('search-results', data);
+          context.session('search-results', returnData);
           // trigger dom update!
           context.trigger('update-table', context);
         },
@@ -167,7 +184,10 @@
         dataType: 'json',
         contentType: 'application/json',
         data: this.json(this.params),
-        success: function (data) {
+        success: function (returnData) {
+          context.log(returnData);
+          context.updateSearchResults(returnData, 'add');
+          context.trigger('update-table', context);
           context.partial('templates/client/new.template');
         },
         error: function (e) {
