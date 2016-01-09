@@ -9,7 +9,7 @@ npm-debug.log*
 
 ### Environment Variables ###
 .env
-config.json
+config/
 
 # Runtime data
 pids
