@@ -1,5 +1,6 @@
 var express = require('express');
 var nunjucks = require('nunjucks');
+//var scriptTag = require('nunjucks-script-tag');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -19,6 +20,8 @@ nunjucks.configure('templates', {
     autoescape: true,
     express: app
 });
+
+//scriptTag.configure(env);
 
 
 // uncomment after placing your favicon in /public

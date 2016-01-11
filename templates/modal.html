@@ -1,93 +1,101 @@
 {% extends "modal-base.html" %}
 {% block body %}
 {# This will be used to pull in bar chart data #}
-{% if query %}
+{% if data %}
 <input id="theData" type="hidden" name="data" value="{{ data }}">
-
+<div id="graph"></div>
+{#
 <h4>The question: </h4>
-<h6>{{ query }}</h6>
+<h6>{{ data.query }}</h6>
 <h4>Answers: </h4>
-{% for answer in answers %}
+{% for answer in data.answers %}
 {{ answer.choice }}<br>
-{% endfor %}
+{% endfor %} #}
 {% else %}
 <h4>No Data</h4>
 {% endif %}
 {% endblock %}
 {% block scripts %}
+
 <script>
+  // Recieved object now let d3 do the work of making the barchart
+  var data = JSON.parse($('#theData').attr('value'));
 
-var margin = {top: 40, right: 20, bottom: 30, left: 40},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+  var margin = {top: 40, right: 30, bottom: 20, left: 40};
+  var ww = $(window).width();
+  var hh = $(window).height();
+  var width = ww / 1.618 - margin.left - margin.right;
+  var height = hh / 1.618 - margin.top - margin.bottom;
 
-//var formatPercent = d3.format(".0%");
+  var x = d3.scale.ordinal()
+      .rangeRoundBands([0, width], .1);
 
-var x = d3.scale.ordinal()
-    .rangeRoundBands([0, width], .1);
+  var y = d3.scale.linear()
+      .range([height, 0]);
 
-var y = d3.scale.linear()
-    .range([height, 0]);
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
 
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
+  var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left");
 
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left");
-    //.tickFormat(formatPercent);
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+      return "<strong>Choice:</strong> <span style='color:red'>" + d.picked + "</span>";
+    });
 
-var tip = d3.tip()
-  .attr('class', 'd3-tip')
-  .offset([-10, 0])
-  .html(function(d) {
-    return "<strong>Choice:</strong> <span style='color:red'>" + d.frequency + "</span>";
-  })
+  var svg = d3.select("#graph").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  svg.call(tip);
 
-svg.call(tip);
+  d3.map(data.answers, function (answer) {
 
-d3.tsv("data.tsv", type, function(error, data) {
-  x.domain(data.map(function(d) { return d.letter; }));
-  y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+    x.domain(data.answers.map(function (answer) {
+      return answer.choice;
+    }));
 
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+    y.domain([0, d3.max(data.answers, function (d) {
+      return d.picked;
+    })]);
 
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Frequency");
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
 
-  svg.selectAll(".bar")
-      .data(data)
-    .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.letter); })
-      .attr("width", x.rangeBand())
-      .attr("y", function(d) { return y(d.frequency); })
-      .attr("height", function(d) { return height - y(d.frequency); })
-      .on('mouseover', tip.show)
-      .on('mouseout', tip.hide)
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+      .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Frequency");
 
-});
+    svg.selectAll(".bar")
+        .data(data.answers)
+      .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function (answer) { return x(answer.choice); })
+        .attr("width", x.rangeBand())
+        .attr("y", function (answer) { return y(answer.picked); })
+        .attr("height", function(answer) { return height - y(answer.picked); })
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide);
+  });
 
-function type(d) {
-  d.frequency = +d.frequency;
-  return d;
-}
+var choiceTruncate = function (string) {
+  return (string.length > 5)? string.slice(0, 5) : string;
+};
+
 </script>
 {% endblock %}

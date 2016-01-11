@@ -165,8 +165,29 @@ router.post('/results', function (req, res, next) {
       returnData['answers'].push(answer.dataValues);
     }
   }).then(function () {
-    
-    res.render('modal', returnData);
+    /**
+     * Returned answer data structure:
+     * returnData['answers'] =
+     * [
+     *   { picked: 1,
+     *     choice: 'fake answer',
+     *     createdAt: Datetime object,
+     *     updatedAt: Datetime object,
+     *     questionId: 3
+     *   },
+     *   {
+     *     picked: 1,
+     *     choice: 'another answer',
+     *     createdAt: Datetime object,
+     *     updatedAt: Datetime object,
+     *     questionId: 3
+     *   }
+     * ]
+     */
+
+    console.log('Answers: ');
+    console.log(returnData['answers']);
+    res.render('modal', {data: JSON.stringify(returnData)});
   });
 
 });
