@@ -17,6 +17,7 @@
             <th>Question</th>
             <th>Modify</th>
             <th>Delete</th>
+            <th>Results</th>
           </tr>
         </thead>
         <tbody id="tableData">
@@ -26,15 +27,46 @@
                  <tr>
                    <td><%= question.id %></td>
                    <td><%= question.query %></td>
-                   <td><button><a href="#/edit-question/<%= question.id %>">Edit</a></button></td>
-                   <td><button><a href="#/delete-question/<%= question.id %>">Delete</a></button></td>
+                   <td>
+                     <button>
+                       <a href="#/edit-question/<%= question.id %>">Edit</a>
+                     </button>
+                   </td>
+                   <td>
+                     <button>
+                       <a href="#/delete-question/<%= question.id %>">Delete</a>
+                     </button>
+                   </td>
+                   <td>
+                     <!-- Fires post to /admin/results by way of jquery event
+                          in admin.html script -->
+                     <button id="dataResults" type="button" class="button various"
+                             name="question" value="<%= question.id %>">Results</button>
+                   </td>
                  </tr>
             <% }
           } %>
-
-
         </tbody>
       </table>
     </div>
   </div>
 </section>
+<script>
+(function ($) {
+  $('#tableData').on('click', '#dataResults', function () {
+    var questionID = $(this).attr('value');
+
+    $.fancybox({
+      type: 'ajax',
+      href: '/admin/results',
+      ajax: {
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          question: questionID
+        })
+      }
+    });
+  });
+})(jQuery);
+</script>

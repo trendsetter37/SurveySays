@@ -3,7 +3,7 @@
 
       this.helpers({
         updateSearchResults: function (data, action) {
-          // Action will determine what to do with datas
+          // Action will determine what to do with the datas
           // action = 'delete', 'add', 'etc.'
 
           var tableResults = app.session('search-results', function () {
@@ -11,7 +11,6 @@
           });
 
           if ('delete' === action) {
-            // query_id should be contained within data as a key
 
             if (tableResults.length !== 0) {
               tableResults = tableResults.filter(function (result) {
@@ -38,8 +37,6 @@
     this.use('Session');
     this.use(SearchPlugin);
 
-
-    // Events: Implent bindings and triggers to update templates
     /*********************** Events *****************************************/
     this.bind('update-table', function (context) {
       /** Structure of tableResults
@@ -50,7 +47,7 @@
        *   query: "A third question",
        *   updatedAt: "2016-01-08T20:27:22.000Z",
        * }
-      */
+       */
       var tableResults = app.session('search-results', function () {
         return {};
       });
@@ -61,7 +58,6 @@
         table.html('');
         this.renderEach('templates/client/table-rows.template', tableResults)
           .appendTo(table);
-        // store table html for back button
       } else {
         table.html('<tr><td colspan="4">No Results</td></tr>');
       }
@@ -76,30 +72,28 @@
       context.partial('templates/client/find.template');
     });
     /*********************** Routes *****************************************/
-    this.get('#/new-question', function (context) {
-      context.partial('templates/client/new.template');
-    });
+    this.get('#/delete-question/:id', function (context) {
+      // Delete question
 
-    this.get('#/find-question', function (context) {
-      var tableResults = context.session('search-results', function () {
-        return {};
+      $.ajax({
+        url: 'admin/delete',
+        type: 'DELETE',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: this.json(this.params),
+        success: function (returnData) {
+          context.updateSearchResults(returnData, 'delete');
+          context.trigger('update-table');
+          context.redirect('#/find-question');
+        },
+        error: function (error) {
+          context.log(error);
+        }
       });
-
-      if (tableResults.length > 0) {
-        context.partial('templates/client/find.template', {data: tableResults});
-      } else {
-        context.partial('templates/client/find.template', {data: 'empty'});
-      }
-    });
-
-    this.get('#/results', function (context) {
-      // Place holder for results page route
     });
 
     this.get('#/edit-question/:id', function (context) {
-
       var id = this.params['id'];
-      // hit database
       $.ajax({
         url: '/admin/find/' + id,
         type: 'GET',
@@ -114,29 +108,27 @@
       });
     });
 
-    this.get('#/delete-question/:id', function (context) {
-      // Delete question
-
-      $.ajax({
-        url: 'admin/delete',
-        type: 'POST',
-        dataType: 'json',
-        contentType: 'application/json',
-        data: this.json(this.params),
-        success: function (returnData) {
-          context.updateSearchResults(returnData, 'delete');
-          context.trigger('update-table');
-          context.redirect('#/find-question');
-        },
-        error: function (error) {
-          context.log(error);
-        }
+    this.get('#/find-question', function (context) {
+      var tableResults = context.session('search-results', function () {
+        return {};
       });
+      if (tableResults.length > 0) {
+        context.partial('templates/client/find.template', {data: tableResults});
+      } else {
+        context.partial('templates/client/find.template', {data: 'empty'});
+      }
     });
+
+    this.get('#/new-question', function (context) {
+      context.partial('templates/client/new.template');
+    });
+
+    this.get('#/results', function (context) {
+      // Place holder for results page route
+    });
+
     /************************ POST Routes ***********************************/
     this.post('#/edit-question', function (context) {
-      // Check the datas
-      context.log(this.params);
 
       // Send to backend
       $.ajax({
@@ -185,16 +177,23 @@
         contentType: 'application/json',
         data: this.json(this.params),
         success: function (returnData) {
-          context.log(returnData);
           context.updateSearchResults(returnData, 'add');
           context.trigger('update-table', context);
           context.partial('templates/client/new.template');
         },
-        error: function (e) {
-          context.log(e);
+        error: function (error) {
+          context.log(error);
         }
       });
 
+    });
+
+    this.post('#/question-results', function (context) {
+      /* go get the results for said question id */
+      context.log('Results for: ');
+      context.log(this.params['id']);
+      context.log('Modal hit');
+      context.render('templates/client/results.template');
     });
 
     this.notFound = function () {

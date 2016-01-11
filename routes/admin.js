@@ -6,6 +6,41 @@ var Promise = require('bluebird');
 
 /* Admin page */
 
+/*********************** DELETE *************************/
+router.delete('/delete', function (req, res, next) {
+  // Delete the question
+  var data = req.body;
+  var returnData = {};
+
+  models.Question.findOne({
+    where: {
+      id: data.id
+    },
+    include: [{model: models.Answer}]
+  }).then(function (result) {
+    result.destroy().then(function (confirmation) {
+      returnData['id'] = confirmation.id
+      returnData['answer_ids'] = []; // may need this later?
+
+      Promise.each(confirmation.answers, function (answer) {
+        return answer.destroy()
+          .then(function (answerConfirmation) {
+            returnData['answer_ids'].push(answerConfirmation.id);
+          });
+      }).then(function () {
+        returnData['status'] = 'done';
+        res.json(returnData);
+      });
+    });
+  }).catch(function (e) {
+    // Something went wrong
+    responseData['error'] = e;
+    responseData['status'] = 'Error';
+    res.json(responseData);
+  });
+
+}); // close delete post route
+
 /************************ GET ***************************/
 router.get('/', function(req, res, next) {
     res.render('admin', {title: 'Admin page'});
@@ -111,40 +146,29 @@ router.post('/edit', function (req, res, next) {
   res.json({'status': 'done'});
 });
 
-
-router.post('/delete', function (req, res, next) {
-  // Delete the question
+router.post('/results', function (req, res, next) {
+  // {question: 3} = data
   var data = req.body;
   var returnData = {};
-
   models.Question.findOne({
     where: {
-      id: data.id
-    },
-    include: [{model: models.Answer}]
-  }).then(function (result) {
-    result.destroy().then(function (confirmation) {
-      returnData['id'] = confirmation.id
-      returnData['answer_ids'] = []; // may need this later?
-
-      Promise.each(confirmation.answers, function (answer) {
-        return answer.destroy()
-          .then(function (answerConfirmation) {
-            returnData['answer_ids'].push(answerConfirmation.id);
-          });
-      }).then(function () {
-        returnData['status'] = 'done';
-        res.json(returnData);
-      });
-    });
-  }).catch(function (e) {
-    // Something went wrong
-    responseData['error'] = e;
-    responseData['status'] = 'Error';
-    res.json(responseData);
+      id: data.question
+    }
+  }).then(function (question) {
+    returnData['query'] = question.query;
+    returnData['id'] = question.id;
+    returnData['answers'] = [];
+    return question.getAnswers();
+  }).then(function (answers) {
+    // everything should be loaded for D3 barchart now
+    for (answer of answers) {
+      returnData['answers'].push(answer.dataValues);
+    }
+  }).then(function () {
+    
+    res.render('modal', returnData);
   });
 
-}); // close delete post route
-
+});
 
 module.exports = router;

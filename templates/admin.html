@@ -2,6 +2,12 @@
 {% block navigation %}
 {% include "admin-navigation.html" %}
 {% endblock %}
+{% block links %}
+<!-- Add fancyBox -->
+<link rel="stylesheet" href="/fancy/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+
+
+{% endblock %}
 {% block body %}
 <div class="row">
   <div class="small-8 small-centered medium-8 medium-centered columns">
@@ -14,4 +20,5 @@
 {% endblock %}
 {% block scripts %}
 <script src="javascripts/admin-spa.js"></script>
+<script type="text/javascript" src="/fancy/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 {% endblock %}

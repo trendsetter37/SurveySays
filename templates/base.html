@@ -5,6 +5,8 @@
   <link rel="stylesheet" type="text/css" href="stylesheets/foundation.min.css">
   <link rel="stylesheet" type="text/css" href="stylesheets/app.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  {# Links #}
+  {% block links %}{% endblock %}
   {# Scripts #}
   {% block head_scripts %}{% endblock %}
 </head>
@@ -15,7 +17,7 @@
 <script src="javascripts/foundation.min.js"></script>
 <script>
   (function ($) {
-    $(document).foundation()
+    $(document).foundation();
   })(jQuery);
 </script>
 {# Additional scripts can be added here #}

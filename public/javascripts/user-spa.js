@@ -69,8 +69,6 @@
 
     this.post('#/reset-survey', function(context) {
       // fire reset for the current user in the in the db
-      context.log('Fire Reset!');
-      context.log('Current User: ');
       context.log(context.session('fingerprint'));
 
       $.ajax({
@@ -81,15 +79,12 @@
         data: this.json({fingerprint: context.session('fingerprint')}),
         success: function (returnData) {
           context.clearSession();
-          context.log('Successful reset!');
           context.partial('templates/client/done.template');
-
         },
         error: function (error) {
           context.log(error);
         }
       });
-
     });
 
     this.post('#/submit-answer', function (context) {
@@ -115,7 +110,6 @@
           context.partial('templates/client/error.template', {error: error});
         }
       });
-
     });
 
     this.notFound = function () {
