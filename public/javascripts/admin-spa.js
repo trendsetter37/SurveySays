@@ -38,6 +38,7 @@
     this.use(SearchPlugin);
 
     /*********************** Events *****************************************/
+    // Event cleanup check
     this.bind('update-table', function (context) {
       /** Structure of tableResults
        * {
