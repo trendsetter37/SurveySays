@@ -1,4 +1,8 @@
 'use strict';
+var fs = require('fs');
+var answers = require('../fixtures/answers.json');
+var questions = require('../fixtures/questions.json');
+var users = require('../fixtures/users.json');
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
@@ -13,16 +17,13 @@ module.exports = {
       }], {});
     */
 
-    return queryInterface.bulkInsert('Question', [
-      {
-        query: "First Question?"
-      },
-      {
-        query: "Second Question?"
-      }
-    ]).then(function () {
-      queryInterface.findAll()
-    })
+    return queryInterface.bulkInsert('Question', questions)
+      .then(function () {
+        return queryInterface.bulkInsert('Answer', answers);
+      })
+      .then(function () {
+        return queryInterface.bulkInsert('User', users);
+      });
   },
 
   down: function (queryInterface, Sequelize) {
