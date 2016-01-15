@@ -34,16 +34,17 @@ function loadAnswer(key) {
   answer.data['id'] = key;
   answer.data['picked'] = pickedValues.randomElement();
   answer.data['choice'] = randomWords();
-  answer.data['createdAt'] = new Date();
+  answer.data['createdAt'] = Date.now();
+  answer.data['updatedAt'] = Date.now();
   if (key % 4 === 0) {
-    answer.data['question'] = count;
+    answer.data['questionId'] = count;
     loadQuestion(count);
     loadUser(count);
     count++;
   } else {
-    answer.data['question'] = count;
+    answer.data['questionId'] = count;
   }
-  answers.push(answer);
+  answers.push(answer.data);
 }
 
 function loadQuestion(primaryID) {
@@ -52,8 +53,9 @@ function loadQuestion(primaryID) {
   question['data'] = {};
   question.data['query'] = randomQuestion();
   question.data['id'] = primaryID;
-  question.data['createdAt'] = new Date();
-  questions.push(question);
+  question.data['createdAt'] = Date.now();
+  question.data['updatedAt'] = Date.now();
+  questions.push(question.data);
 }
 
 function loadUser(primaryID) {
@@ -62,8 +64,9 @@ function loadUser(primaryID) {
   user['data'] = {};
   user.data['id'] = primaryID;
   user.data['ident'] = bcrypt.hashSync(randomWords({ exactly: 5, join: '' }));
-  user.data['createdAt'] = new Date();
-  users.push(user);
+  user.data['createdAt'] = Date.now();
+  user.data['updatedAt'] = Date.now();
+  users.push(user.data);
 }
 
 function randomQuestion() {

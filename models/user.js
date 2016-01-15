@@ -1,28 +1,19 @@
-/*jslint node: true*/
-"use strict";
+'use strict';
 
-module.exports = function (sequelize, DataTypes) {
-    var User = sequelize.define('user', {
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
-        },
-        ident: {
-          type: DataTypes.STRING, // Hash from fingerprint2js
-          allowNull: false
-        }
-    }, {
-        classMethods: {
-            associate: function (models) {
-                User.belongsToMany(models.Question, {
-                  foreignKey: 'ident',
-                  through: 'UserQuestion'
-                });
+module.exports = function(sequelize, DataTypes) {
+  var User = sequelize.define('user', {
+    ident: DataTypes.STRING
+  }, {
+    classMethods: {
+      associate: function(models) {
+        User.belongsToMany(models.Question, {
+          foreignKey: 'ident',
+          through: 'UserQuestion'
+        });
+        User.belongsToMany(models.Answer, {through: 'UserAnswer'});
+      }
+    }
+  });
 
-                User.belongsToMany(models.Answer, {through: 'UserAnswer'});
-            }
-        }
-    });
-    return User;
+  return User;
 };
