@@ -3,4 +3,10 @@
   <td><%= query %></td>
   <td><button><a href="#/edit-question/<%= id %>">Edit</a></button></td>
   <td><button><a href="#/delete-question/<%= id %>">Delete</a></button></td>
+  <td>
+    <!-- Fires post to /admin/results by way of jquery event
+         in admin.html script -->
+    <button id="dataResults" type="button" class="button various"
+            name="question" value="<%= question.id %>">Results</button>
+  </td>
 </tr>

@@ -59,6 +59,12 @@ router.get('/find/:id', function (req, res, next) {
     });
 });
 
+router.get('/find/all', function (req, res, next) {
+  models.Question.findAll({})
+    .then(function (questions) {
+      console.log(questions);
+    });
+});
 /********************* POST ******************************/
 router.post('/new', function (req, res, next) {
   /* Receive a json with question data */

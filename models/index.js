@@ -9,11 +9,11 @@ var basename  = path.basename(module.filename);
 var env       = process.env.NODE_ENV || 'test';
 var config    = require(__dirname + '/../config/config.json')[env];
 var db        = {};
-
-// TODO fix this eventually
-var connection_url = 'mysql://test_user:testypass@104.131.203.140:3306/surveysays_test';
-console.log(typeof connection_url);
-var sequelize = new Sequelize(connection_url);
+console.log(config);
+console.log(`${config.host}`)
+var connectionURL =
+  `${config.dialect}://${config.username}:${config.password}@${config.host}/${config.database}`;
+var sequelize = new Sequelize(connectionURL);
 
 // only three models
 db.Question = sequelize.import(path.join(__dirname + "/question.js"));

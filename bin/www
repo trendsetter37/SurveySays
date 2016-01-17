@@ -30,12 +30,12 @@ app.set('port', port);
 /**
  * Sync models with database
  */
-
+/*
 models
   .sequelize
   .query('SET FOREIGN_KEY_CHECKS = 0', {raw: true})
   .then(function (results) {
-    models.sequelize.sync(/*{force: true}*/).then(function () {
+    models.sequelize.sync().then(function () {
 
         server = app.listen(app.get('port'), function () {
             debug('SurveySays listening on port ' + server.address().port);
@@ -43,8 +43,13 @@ models
         server.on('error', onError);
         server.on('listening', onListening);
     });
-  });
+  }); */
 
+  server = app.listen(app.get('port'), function () {
+      debug('SurveySays listening on port ' + server.address().port);
+  });
+  server.on('error', onError);
+  server.on('listening', onListening);
 /*
   models.sequelize.sync().then(function () {
 

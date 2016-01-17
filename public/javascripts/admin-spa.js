@@ -124,10 +124,6 @@
       context.partial('templates/client/new.template');
     });
 
-    this.get('#/results', function (context) {
-      // Place holder for results page route
-    });
-
     /************************ POST Routes ***********************************/
     this.post('#/edit-question', function (context) {
 
