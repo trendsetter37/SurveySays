@@ -7,9 +7,22 @@
 <link rel="stylesheet" href="/fancy/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
 <link rel="stylesheet" href="javascripts/themes/blue/style.css" type="text/css"
       media="print, projection, screen" />
+<link rel="stylesheet" href="javascripts/addons/pager/jquery.tablesorter.pager.css" type="text/css" />
 {% endblock %}
 {% block head_scripts %}
+<script>
+jQuery.browser = {};
+(function () {
+    jQuery.browser.msie = false;
+    jQuery.browser.version = 0;
+    if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+        jQuery.browser.msie = true;
+        jQuery.browser.version = RegExp.$1;
+    }
+})();
+</script>
 <script type="text/javascript" src="javascripts/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="javascripts/jquery.tablesorter.pager.js"></script>
 {% endblock %}
 {% block body %}
 <div class="row align-center">

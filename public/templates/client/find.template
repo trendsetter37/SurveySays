@@ -10,7 +10,7 @@
 <section class="text-centered">
   <div class="row">
     <div class="align-center small-12 small-centered medium-12 medium-centered large-12 large-centered columns">
-      <table id="resultsTable" cellspacing="1" class="tablesorter pagination">
+      <table id="resultsTable" cellspacing="1" border="1" class="tablesorter">
         <thead>
           <tr>
             <th>ID&nbsp;&nbsp;</th>
@@ -47,8 +47,31 @@
             <% }
           } %>
         </tbody>
+        <tfoot>
+         <th>ID</td>
+         <th>Question</td>
+         <th>Edit</td>
+         <th>Modify</td>
+         <th>Results</td>
+        </tfoot>
       </table>
-
+        <div class="align-center">
+          <div id="pager" class="pager tablesorterPager">
+            <form>
+              <img src="javascripts/addons/pager/icons/first.png" class="first">
+              <img src="javascripts/addons/pager/icons/prev.png" class="prev">
+              <input type="text" class="pagedisplay">
+              <img src="javascripts/addons/pager/icons/next.png" class="next">
+              <img src="javascripts/addons/pager/icons/last.png" class="last">
+              <select class="pagesize">
+                <option selected="selected" value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+              </select>
+            </form>
+          </div>
+        </div>
     </div>
   </div>
 </section>
@@ -73,8 +96,12 @@
 
 
 $('table').tablesorter({
-  headers: { 2: {sorter: false}, 3: {sorter: false}, 4: {sorter: false}}
-});
+  headers: { 2: {sorter: false}, 3: {sorter: false}, 4: {sorter: false}},
+  widthFixed: true,
+  widgets: ['zebra']
+}).tablesorterPager({container: $('#pager')});
+
+
 
 
 })(jQuery);
