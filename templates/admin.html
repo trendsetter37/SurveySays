@@ -5,6 +5,11 @@
 {% block links %}
 <!-- Add fancyBox -->
 <link rel="stylesheet" href="/fancy/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+<link rel="stylesheet" href="javascripts/themes/blue/style.css" type="text/css"
+      media="print, projection, screen" />
+{% endblock %}
+{% block head_scripts %}
+<script type="text/javascript" src="javascripts/jquery.tablesorter.min.js"></script>
 {% endblock %}
 {% block body %}
 <div class="row align-center">
@@ -19,4 +24,13 @@
 {% block scripts %}
 <script src="javascripts/admin-spa.js"></script>
 <script type="text/javascript" src="/fancy/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+<script>
+var queryTruncate = function (query) {
+  if (query.length > 47) {
+    return query.substring(0, 47) + '...';
+  } else {
+    return query;
+  }
+}
+</script>
 {% endblock %}

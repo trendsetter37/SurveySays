@@ -7,13 +7,14 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   {# Links #}
   {% block links %}{% endblock %}
+  <script src="javascripts/vendor/jquery.min.js"></script>
   {# Scripts #}
   {% block head_scripts %}{% endblock %}
 </head>
 <body>
 {% block navigation %}{% include "navigation.html" %}{% endblock %}
 {% block body %}{% endblock %}
-<script src="javascripts/vendor/jquery.min.js"></script>
+
 <script src="javascripts/foundation.min.js"></script>
 <script>
   (function ($) {

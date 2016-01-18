@@ -10,10 +10,10 @@
 <section class="text-centered">
   <div class="row">
     <div class="align-center small-12 small-centered medium-12 medium-centered large-12 large-centered columns">
-      <table>
+      <table id="resultsTable" cellspacing="1" class="tablesorter">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>ID&nbsp;&nbsp;</th>
             <th>Question</th>
             <th>Modify</th>
             <th>Delete</th>
@@ -26,7 +26,7 @@
                for (question of data) { %>
                  <tr>
                    <td><%= question.id %></td>
-                   <td><%= question.query %></td>
+                   <td><%= queryTruncate(question.query) %></td>
                    <td>
                      <button>
                        <a href="#/edit-question/<%= question.id %>">Edit</a>
@@ -40,7 +40,7 @@
                    <td>
                      <!-- Fires post to /admin/results by way of jquery event
                           in admin.html script -->
-                     <button id="dataResults" type="button" class="button various"
+                     <button id="dataResults" type="button" class="tiny button various"
                              name="question" value="<%= question.id %>">Results</button>
                    </td>
                  </tr>
@@ -68,5 +68,10 @@
       }
     });
   });
+
+$('table').tablesorter({
+  headers: { 2: {sorter: false}, 3: {sorter: false}, 4: {sorter: false}}
+});
+
 })(jQuery);
 </script>
