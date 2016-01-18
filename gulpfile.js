@@ -36,7 +36,3 @@ gulp.task('default', ['seed-test-db'], function () {
   /* Default gulp task here */
   exec('npm start');
 });
-
-gulp.task('No-go', function () {
-  console.log('This shouldn\'t run');
-});

@@ -10,7 +10,7 @@
 <section class="text-centered">
   <div class="row">
     <div class="align-center small-12 small-centered medium-12 medium-centered large-12 large-centered columns">
-      <table id="resultsTable" cellspacing="1" class="tablesorter">
+      <table id="resultsTable" cellspacing="1" class="tablesorter pagination">
         <thead>
           <tr>
             <th>ID&nbsp;&nbsp;</th>
@@ -48,11 +48,13 @@
           } %>
         </tbody>
       </table>
+
     </div>
   </div>
 </section>
 <script>
 (function ($) {
+
   $('#tableData').on('click', '#dataResults', function () {
     var questionID = $(this).attr('value');
 
@@ -69,9 +71,11 @@
     });
   });
 
+
 $('table').tablesorter({
   headers: { 2: {sorter: false}, 3: {sorter: false}, 4: {sorter: false}}
 });
+
 
 })(jQuery);
 </script>

@@ -5,7 +5,8 @@ module.exports = function(sequelize, DataTypes) {
     choice: DataTypes.STRING,
     picked: {
       type: DataTypes.INTEGER,
-      defaultValue: 0
+      defaultValue: 0,
+      allowNull: false
     }
   }, {
     classMethods: {
