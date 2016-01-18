@@ -157,6 +157,7 @@
           context.session('search-results', returnData);
           // trigger dom update!
           context.trigger('update-table', context);
+          //context.$element('table').trigger('update');
         },
         error: function (e) {
           context.log(e);

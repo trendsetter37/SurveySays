@@ -1,9 +1,9 @@
 <h4>Find/Edit a question</h4>
-<form action="#/find-question" method="post">
+<form action="#/find-question" method="post" id="searchField">
   <div class="input-group rounded">
     <input type="text" name="query" class="input-group-field" placeholder="Question">
     <div class="input-group-button">
-      <button type="submit" class="button secondary">Search</button>
+      <button type="submit" class="button secondary" id="search">Search</button>
     </div>
   </div>
 </form>
@@ -95,14 +95,10 @@
   });
 
 
-$('table').tablesorter({
-  headers: { 2: {sorter: false}, 3: {sorter: false}, 4: {sorter: false}},
-  widthFixed: true,
-  widgets: ['zebra']
-}).tablesorterPager({container: $('#pager')});
-
-
-
-
+  $('table').tablesorter({
+    headers: { 2: {sorter: false}, 3: {sorter: false}, 4: {sorter: false}},
+    widthFixed: true,
+    widgets: ['zebra']
+  }).tablesorterPager({container: $('#pager')});
 })(jQuery);
 </script>
