@@ -48,37 +48,40 @@
           } %>
         </tbody>
         <tfoot>
-         <th>ID</td>
-         <th>Question</td>
-         <th>Edit</td>
-         <th>Modify</td>
-         <th>Results</td>
-        </tfoot>
-      </table>
-        <div class="align-center">
-          <div id="pager" class="pager tablesorterPager">
-            <form>
-              <img src="javascripts/addons/pager/icons/first.png" class="first">
-              <img src="javascripts/addons/pager/icons/prev.png" class="prev">
-              <input type="text" class="pagedisplay">
-              <img src="javascripts/addons/pager/icons/next.png" class="next">
-              <img src="javascripts/addons/pager/icons/last.png" class="last">
-              <select class="pagesize">
-                <option selected="selected" value="10">10</option>
+          <tr>
+           <th>ID</td>
+           <th>Question</td>
+           <th>Edit</td>
+           <th>Modify</td>
+           <th>Results</td>
+          </tr>
+         <tr class="dark-row">
+          <th colspan="5">
+            <div class="pager">
+              <button type="button" class="first"><<</button>
+              <button type="button" class="prev"><</button>
+              <span class="pagedisplay"></span>
+              <button type="button" class="next">></button>
+              <button type="button" class="last">>></button>
+              <select class="pagesize" title="Select page size">
+                <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="30">30</option>
                 <option value="40">40</option>
               </select>
-            </form>
-          </div>
-        </div>
+              <select class="gotoPage" title="Select page number"></select>
+            </div>
+          </th>
+        </tr>
+       </tfoot>
+      </table>
     </div>
   </div>
 </section>
 <script>
 (function ($) {
 
-  $('#tableData').on('click', '#dataResults', function () {
+  $('table').on('click', '#dataResults', function () {
     var questionID = $(this).attr('value');
 
     $.fancybox({
@@ -93,12 +96,22 @@
       }
     });
   });
+  var $table = $('table');
+
+  $table
+    .tablesorter({
+      theme: 'metro-dark',
+      widthFixed: true,
+      widgets: ['zebra', 'pager'],
+      widgetOptions: {
+        pager_output: '{startRow:input} to {endRow} of {totalRows} rows',
+        pager_updateArrows: true,
+        pager_startPage: 0,
+        pager_size:10,
+        pager_fixedHeight: true
+      }
+    });
 
 
-  $('table').tablesorter({
-    headers: { 2: {sorter: false}, 3: {sorter: false}, 4: {sorter: false}},
-    widthFixed: true,
-    widgets: ['zebra']
-  }).tablesorterPager({container: $('#pager')});
 })(jQuery);
 </script>

@@ -190,11 +190,13 @@ router.post('/results', function (req, res, next) {
      *   }
      * ]
      */
-
-    console.log('Answers: ');
-    console.log(returnData['answers']);
     res.render('modal', {data: JSON.stringify(returnData)});
   });
+
+});
+
+/* Try this for tablesorter filters */
+router.post('/table-results', function (req, res, next) {
 
 });
 
